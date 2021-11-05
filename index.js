@@ -11,8 +11,13 @@ function base64(opts = {}) {
     name: "base64",
     transform(data, id) {
       if (filter(id)) {
-        const fileData = readFileSync(id);
-          return  `export default "${fileData.toString('base64')}";`
+        const fileData = fs.readFileSync(id);
+        return {
+          code: `export default "data:${mime.lookup(id)};base64,${fileData.toString('base64')}";`,
+          map: {
+            mappings: "",
+          },
+        };
       }
     }
   };
